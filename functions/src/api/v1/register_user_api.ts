@@ -26,6 +26,8 @@ import { getAllReviews } from "./games/reviews/get_all_reviews";
 import { getAllReviewsForGame } from "./games/reviews/get_all_reviews_for_game";
 import { getReviewsForUser } from "./games/reviews/get_reviews_for_user";
 import { deleteReview } from "./games/reviews/delete_review";
+import { getFlaggedReviews } from "./games/reviews/get_flagged_reviews";
+import { flagReview } from "./games/reviews/flag_review";
 
 
 export function registerAppApi(router: Router) {
@@ -63,16 +65,8 @@ export function registerAppApi(router: Router) {
     router.get(Endpoints.reviewsForUser, getReviewsForUser);
     router.delete(Endpoints.review, deleteReview);
     router.get(Endpoints.flaggedReviews, getFlaggedReviews);
-    router.put(Endpoints.flagReview, flagReview);
-    router.put(Endpoints.unflagReview, unflagReview);
-
-
-    
-
-
-
-
-    
+    router.post(Endpoints.flagReview,flagReview);
+    // router.put(Endpoints.resolveFlaggedReview, resolveFlaggedReport);
 
 }
 

@@ -10,6 +10,23 @@ import { AddReviewDTO } from "../dtos/add_review_dto";
 
 // eslint-disable-next-line require-jsdoc
 export class Validator {
+  static validateFlaggedReviewDto(flagReviewDto: FlagReviewDto) {
+    const schema = Joi.object({
+      reason: Joi.string().min(3).max(30).required(),
+      description: Joi.string().min(5).max(250).required(),
+      flaggedBy: Joi.string().min(3).max(30).required(),
+    });
+
+    const { error } = schema.validate(flagReviewDto);
+
+    if (error) {
+      return error.details[0].message;
+    }
+
+    return true;
+  }
+
+
   static validateAddReview(addReviewReq: AddReviewDTO) {
     const schema = Joi.object({
       gameId: Joi.string().min(3).required(),
@@ -25,6 +42,8 @@ export class Validator {
 
     return true;
   }
+
+
   static async validateGameData(data: AddGameDTO) {
     const schema = Joi.object({
       title: Joi.string().min(3).max(30).required(),

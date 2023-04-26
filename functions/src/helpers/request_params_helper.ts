@@ -16,7 +16,7 @@ export const getCountFromQuery = (limit: QueryParam ) => {
     return count;
 }
 
-export const getLastGameIdFromQuery = (lastGameId: QueryParam) => {
+export const getStringFromQuery = (lastGameId: QueryParam) => {
     if (lastGameId === undefined) return undefined;
 
     let lastGameIdString = lastGameId.toString().trim();

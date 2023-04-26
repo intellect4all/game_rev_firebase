@@ -35,12 +35,15 @@ export class Endpoints {
   // reviews
   static reviews = "/reviews";
   static review = `${Endpoints.reviews}/:id`;
-  static reviewsForGame = "/game/:id/reviews";
+  static reviewsForGame = "/game/:gameId/reviews";
   static reviewsForUser = "/user/:userId/reviews";
   static flaggedReviews = `${Endpoints.reviews}/flagged`;
-  static flagReview = `${Endpoints.review}/:id/flag`;
-  static unflagReview = `${Endpoints.review}/:id/unflag`;
+  static flagReview = `${Endpoints.review}/:reviewId/flag`;
+  static resolveFlaggedReview = `${Endpoints.review}/flagged/resolve`;
   
+
+
+
 }
 
 
