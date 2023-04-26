@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Validator } from "../configs/validation";
 
-import { db } from "../../../admin";
+import { db, functions } from "../../../admin";
 import { sendData } from "../configs/route_utils";
 import { getCountFromQuery, getLastGameIdFromQuery } from "../../../helpers/request_params_helper";
 
@@ -24,12 +24,16 @@ export async function getAllGames(req: Request, res: Response) {
             .orderBy("dateAdded", "desc");
 
     if (lastGameIdString !== undefined) {
+       try {
         const lastGameSnapshot = await db.collection("movies")
-            .doc(lastGameIdString as string).get();
+        .doc(lastGameIdString as string).get();
 
-        if (lastGameSnapshot.exists) {
-            query = query.startAfter(lastGameSnapshot);
-        }
+    if (lastGameSnapshot.exists) {
+        query = query.startAfter(lastGameSnapshot);
+    }
+       } catch (error) {
+        functions.logger.error(error);   
+       }
     }
 
     const gamesQuery = await query.limit(count).get();

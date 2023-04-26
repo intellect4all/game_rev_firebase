@@ -48,10 +48,8 @@ export async function editGame(req: Request, res: Response) {
     fieldVlaidationMap.set("developer", Joi.string().min(3).max(30).required());
     fieldVlaidationMap.set("publisher", Joi.string().min(3).max(30).required());
     fieldVlaidationMap.set("poster", Joi.string().uri().default(""));
-    fieldVlaidationMap.set("genres", Joi.array().items(Joi.object({
-        title: Joi.string().min(3).max(30).required(),
-        slug: Joi.string().min(3).max(30).required(),
-    })));
+    fieldVlaidationMap.set("genres", Joi.array().items(Joi.string().min(3).max(30).required(),),
+    );
 
 
     for (let i = 0; i < fieldVlaidationMap.size; i++) {
@@ -80,6 +78,14 @@ export async function editGame(req: Request, res: Response) {
             .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, "").toLowerCase()
             .split(" ");
         newData.set("_titleArray", titleArray);
+    }
+
+    if(newData.size == 0){
+        return sendErrorMessage({
+            res: res,
+            message: "At least one field is required",
+            status: 400,
+        });
     }
 
 

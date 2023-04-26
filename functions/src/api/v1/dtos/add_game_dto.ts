@@ -1,3 +1,5 @@
+
+
 export type AddGameDTO = {
     title: string;
     description: string;
@@ -5,12 +7,6 @@ export type AddGameDTO = {
     developer: string;
     publisher: string;
     poster : string;
-    genres: GameGenre[];
+    genreSlugs: string[];
     status : 'published' | 'unpublished' | 'deleted';
-
-}
-
-export type GameGenre = {
-    title: string;
-    slug: string;
 }

@@ -56,7 +56,9 @@ export async function authenitcate (req: Request, res: Response) {
 
   let token;
   try {
-    token = await admin.auth().createCustomToken(user.id);
+    token = await admin.auth().createCustomToken(user.id,{
+      email: user.get("email"),
+    });
   } catch (e) {
     functions.logger.log(e);
 

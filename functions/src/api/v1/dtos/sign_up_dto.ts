@@ -4,7 +4,6 @@ export type SignUpDTO = {
     email: string;
     username: string;
     password: string;
-    role: String;
     firstName: string;
     lastName: string;
     phone: string;

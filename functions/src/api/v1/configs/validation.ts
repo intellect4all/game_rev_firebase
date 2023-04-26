@@ -5,22 +5,36 @@ import { admin, functions } from "../../../admin";
 import Joi from "joi";
 import { validateOtp } from "../accounts/validate_otp";
 import { AddGameDTO } from "../dtos/add_game_dto";
+import { AddReviewDTO } from "../dtos/add_review_dto";
 // 
 
 // eslint-disable-next-line require-jsdoc
 export class Validator {
-  static async validateGameData(data: AddGameDTO){
+  static validateAddReview(addReviewReq: AddReviewDTO) {
+    const schema = Joi.object({
+      gameId: Joi.string().min(3).required(),
+      review: Joi.string().min(3).max(500).required(),
+      rating: Joi.number().min(1).max(5).required(),
+      origin: this._getLocationSchema(),
+    });
+
+    const { error } = schema.validate(addReviewReq);
+    if (error) {
+      return error.details[0].message;
+    }
+
+    return true;
+  }
+  static async validateGameData(data: AddGameDTO) {
     const schema = Joi.object({
       title: Joi.string().min(3).max(30).required(),
       description: Joi.string().min(5).max(200).required(),
       releaseYear: Joi.number().min(4).max(4).required(),
-      developer : Joi.string().min(3).max(30).required(),
-      publisher : Joi.string().min(3).max(30).required(),
+      developer: Joi.string().min(3).max(30).required(),
+      publisher: Joi.string().min(3).max(30).required(),
       poster: Joi.string().uri().default(""),
-      genres: Joi.array().items(Joi.object({
-        title : Joi.string().min(3).max(30).required(),
-        slug : Joi.string().min(3).max(30).required(),
-      })),
+      genres: Joi.array().items(Joi.string().min(3).max(30).required(),
+      ).min(1).required(),
     });
 
     const { error } = schema.validate(data);
@@ -104,7 +118,7 @@ export class Validator {
     const schema = Joi.string().min(8).max(30)
       .required();
     const { error } = schema.validate(password);
-    if (error ) {
+    if (error) {
       return error.details[0].message;
     }
     return true;
@@ -115,31 +129,23 @@ export class Validator {
   static validateRegistrationData(data: any) {
     const schema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string() .min(8).max(30)
+      password: Joi.string().min(8).max(30)
         .required(),
       username: Joi.string().min(3).required(),
       role: Joi.string().default("user").valid("admin", "user"),
       firstName: Joi.string().min(2).max(30).required(),
       lastName: Joi.string().min(2).max(30).required(),
       phone: Joi.string().min(3).required(),
-      location: Joi.object(
-        {
-          city: Joi.string().required(),
-          country: Joi.string().required(),
-          countryCode: Joi.string().required(),
-          latitude: Joi.number().required(),
-          longitude: Joi.number().required(),
-        }
-      )
+      location: this._getLocationSchema(),
 
     });
     const { error } = schema.validate(data);
-    if (error ) {
+    if (error) {
       return error.details[0].message;
     }
 
     return true;
-    
+
   }
 
 
@@ -182,19 +188,31 @@ export class Validator {
     if (error) {
       return error.details[0].message;
     }
-    
+
     return true;
   }
 
 
   static validateEmptyString(string: string) {
     const schema = Joi.string().required();
-    const {error} = schema.validate(string);
+    const { error } = schema.validate(string);
     if (error) {
       return error.details[0].message;
     }
-    
+
     return true
+  }
+
+  static _getLocationSchema() {
+    return Joi.object(
+      {
+        city: Joi.string().required(),
+        country: Joi.string().required(),
+        countryCode: Joi.string().required(),
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required(),
+      }
+    );
   }
 
 }

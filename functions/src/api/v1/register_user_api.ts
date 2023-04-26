@@ -20,6 +20,12 @@ import { editGame } from "./games/edit_game";
 import { getAllGames } from "./games/get_all_games";
 import { getGame } from "./games/get_game";
 import { deleteGame } from "./games/delete_game";
+import { addReview } from "./games/reviews/add_review";
+import { editReview } from "./games/reviews/edit_review";
+import { getAllReviews } from "./games/reviews/get_all_reviews";
+import { getAllReviewsForGame } from "./games/reviews/get_all_reviews_for_game";
+import { getReviewsForUser } from "./games/reviews/get_reviews_for_user";
+import { deleteReview } from "./games/reviews/delete_review";
 
 
 export function registerAppApi(router: Router) {
@@ -50,7 +56,20 @@ export function registerAppApi(router: Router) {
     router.delete(Endpoints.game, deleteGame);
 
     // reviews
+    router.post(Endpoints.reviews, addReview);
+    router.put(Endpoints.review, editReview);
+    router.get(Endpoints.reviews, getAllReviews);
+    router.get(Endpoints.reviewsForGame, getAllReviewsForGame);
+    router.get(Endpoints.reviewsForUser, getReviewsForUser);
+    router.delete(Endpoints.review, deleteReview);
+    router.get(Endpoints.flaggedReviews, getFlaggedReviews);
+    router.put(Endpoints.flagReview, flagReview);
+    router.put(Endpoints.unflagReview, unflagReview);
+
+
     
+
+
 
 
     

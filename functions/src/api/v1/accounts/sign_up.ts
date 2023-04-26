@@ -58,7 +58,6 @@ export async function signUp(req: Request, res: Response) {
     "email": email,
     "username": signupReq.username,
     "password":signupReq.password,
-    "role":signupReq.role,
     "firstName": signupReq.firstName,
     "lastName":signupReq.lastName,
     "phone": signupReq.phone,

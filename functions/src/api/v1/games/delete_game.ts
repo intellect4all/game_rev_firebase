@@ -1,6 +1,4 @@
 import {Request, Response} from "express";
-
-import { Validator } from "../configs/validation";
 import Joi from "joi";
 import { sendData, sendErrorMessage } from "../configs/route_utils";
 import { db } from "../../../admin";

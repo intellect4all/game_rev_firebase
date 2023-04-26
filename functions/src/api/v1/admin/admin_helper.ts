@@ -6,7 +6,7 @@ import {firestore} from "firebase-admin";
 import DocumentData = firestore.DocumentData;
 
 // eslint-disable-next-line require-jsdoc,max-len
-async function isVerifiedAdmin(req: Request, res: Response, checkIfSuperAdmin = false)
+async function isVerifiedAdmin(req: Request, res: Response, onlySuperAdmin = false, shouldSendErrorMessage = true)
     : Promise<false | DocumentData> {
   const decoded = await Validator.validToken(req, res);
   if (decoded === undefined) return false;
@@ -25,7 +25,7 @@ async function isVerifiedAdmin(req: Request, res: Response, checkIfSuperAdmin = 
     }
 
     // eslint-disable-next-line max-len
-    if (!checkIfSuperAdmin && (adminData.get("status") === "active") && adminData.get("verified")) {
+    if (!onlySuperAdmin && (adminData.get("status") === "active") && adminData.get("verified")) {
       return {
         id: adminData.id,
         ...adminData.data(),
@@ -33,12 +33,16 @@ async function isVerifiedAdmin(req: Request, res: Response, checkIfSuperAdmin = 
     }
   }
 
-  await sendErrorMessage({
-    res: res,
-    data: undefined,
-    message: "Unauthorized to perform operation",
-    status: 400,
-  });
+  if (shouldSendErrorMessage) {
+    await sendErrorMessage({
+      res: res,
+      data: undefined,
+      message: "Unauthorized to perform operation",
+      status: 400,
+    });
+  }
+
+  
   return false;
 }
 

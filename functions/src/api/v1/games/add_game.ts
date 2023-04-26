@@ -27,6 +27,41 @@ export async function addGame(req: Request, res: Response) {
         });
     }
 
+    let genres = addGameReq.genreSlugs;
+
+    let embeddedGenres = [];
+
+    // check if genres exist and active
+
+    for (let i = 0; i < genres.length; i++) {
+        const genre = genres[i];
+
+        const genreDoc = await db.collection("genres").doc(genre).get();
+
+        if (!genreDoc.exists) {
+            return sendErrorMessage({
+                res: res,
+                message: "Genre does not exist",
+                status: 400,
+            });
+
+        }
+
+        const genreData = genreDoc.data();
+
+        if (!genreData?.active) {
+            return sendErrorMessage({
+                res: res,
+                message: "Genre is not active",
+                status: 400,
+            });
+        }
+
+        embeddedGenres.push({
+            id: genre,
+            title: genreData?.title ?? "",
+        });
+    }
 
     const titleArray = addGameReq.title
         .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, "").toLowerCase()
