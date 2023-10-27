@@ -10,6 +10,7 @@ firebase-debug.*.log*
 # Firebase cache
 .firebase/
 
+
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.
@@ -64,3 +65,7 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+admin.json
+
+functions/lib/admin.json
